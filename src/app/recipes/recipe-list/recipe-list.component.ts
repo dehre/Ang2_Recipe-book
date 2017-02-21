@@ -1,17 +1,19 @@
-import { Component, Output, EventEmitter } from '@angular/core';
+import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+
+import {RecipeService} from "../recipe.service";
 import {Recipe} from "../recipe";
 
 @Component({
   selector: 'rb-recipe-list',
   templateUrl: './recipe-list.component.html'
 })
-export class RecipeListComponent {
+export class RecipeListComponent implements OnInit {
 
-  // RECIPE LIST HERE
-  recipes: Recipe[] = [
-    new Recipe('Pasta','So good','http://i.ndtvimg.com/i/2015-12/pasta_625x350_41450937320.jpg',[]),
-    new Recipe('Rice','Very light food','http://www.makingindia.co/wp-content/uploads/2016/10/rice.jpg',[])
-  ];
+  constructor(
+    private recipeService:RecipeService
+  ){}
+
+  recipes: Recipe[] = [];
 
   // EMIT AN EVENT TO PASS THE RECIPE THROUGH RECIPES.TS TO RECIPE-DETAIL
   @Output() recipeSelected = new EventEmitter<Recipe>();
@@ -19,6 +21,10 @@ export class RecipeListComponent {
   // METHOD CALLED CLICKING THE RECIPE-ITEM TAG
   onSelected(recipe: Recipe){
     this.recipeSelected.emit(recipe)
+  }
+
+  ngOnInit(){
+    this.recipes = this.recipeService.getRecipes();
   }
 
 }
