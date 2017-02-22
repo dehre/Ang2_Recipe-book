@@ -11,8 +11,8 @@
   </div>
   <div class="col-xs-12">
     <button class="btn btn-success" (click)="onAddToShoppingList()">To Shopping List</button>
-    <button class="btn btn-primary">Edit</button>
-    <button class="btn btn-danger">Delete</button>
+    <button (click)="onEdit()" class="btn btn-primary">Edit</button>
+    <button (click)="onDelete()" class="btn btn-danger">Delete</button>
   </div>
 </div>
 <div class="row">
