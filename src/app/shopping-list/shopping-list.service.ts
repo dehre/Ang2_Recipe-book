@@ -15,5 +15,14 @@ export class ShoppingListService {
   addItem(item: Ingredient){
     this.items.push(item)
   }
+  editItem(oldItem:Ingredient,newItem:Ingredient){
+    this.items[this.items.indexOf(oldItem)] = newItem
+  }
+  deleteItem(item:Ingredient){
+    let i = this.items.indexOf(item);
+    if(i != -1){
+      this.items.splice(i,1)
+    }
+  }
 
 }

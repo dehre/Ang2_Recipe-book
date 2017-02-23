@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { NgForm } from "@angular/forms";
 import { ShoppingListService } from "./shopping-list.service";
 import { Ingredient } from "../shared/ingredient";
@@ -9,6 +9,7 @@ import { Ingredient } from "../shared/ingredient";
 })
 export class ShoppingListAddComponent implements OnChanges {
 
+  @Output() cleared = new EventEmitter();
   @Input() item: Ingredient;
   isAdd = true;
 
@@ -24,12 +25,23 @@ export class ShoppingListAddComponent implements OnChanges {
   }
 
   onSubmit(ingredient:Ingredient){
+    const newIngredient = new Ingredient(ingredient.name,ingredient.amount)
     if(!this.isAdd){
-      //EDIT
+      this.sls.editItem(this.item,newIngredient);
+      this.onClear();
     } else {
-      this.item = new Ingredient(ingredient.name,ingredient.amount);
+      this.item = newIngredient;
       this.sls.addItem(this.item);
     }
+  }
+
+  onDelete(item:Ingredient){
+    this.sls.deleteItem(item);
+    this.onClear();
+  }
+  onClear(){
+    this.isAdd = true;
+    this.cleared.emit(null);
   }
 
 }
