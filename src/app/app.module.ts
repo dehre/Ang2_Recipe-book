@@ -10,12 +10,14 @@ import {ShoppingListModule} from "./shopping-list/shopping-list.module";
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header.component';
 import { DropdownDirective } from './dropdown.directive';
+import { HomeComponent } from './home.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    DropdownDirective
+    DropdownDirective,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
