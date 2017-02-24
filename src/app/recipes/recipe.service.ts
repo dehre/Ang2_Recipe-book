@@ -1,9 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter, Output } from '@angular/core';
+import { Headers, Http, Response } from "@angular/http";
 import {Recipe} from "./recipe";
 import {Ingredient} from "../shared/ingredient";
+import "rxjs/Rx";
 
 @Injectable()
 export class RecipeService {
+
+  recipesChanged = new EventEmitter<Recipe[]>();
 
   // RECIPE LIST HERE
   private recipes: Recipe[] = [
@@ -16,6 +20,8 @@ export class RecipeService {
       new Ingredient('Fruit',2)
     ])
   ];
+
+  constructor(private http:Http){}
 
   getRecipes(){
     return this.recipes
@@ -35,6 +41,25 @@ export class RecipeService {
 
   deleteRecipe(recipe:Recipe){
     this.recipes.splice(this.recipes.indexOf(recipe),1)
+  }
+
+  storeData(){
+    const body= JSON.stringify(this.recipes);
+    const headers = new Headers({
+      'Content-Type': 'application/json'
+    });
+    return this.http.put('https://angular2-course-4d245.firebaseio.com/recipes.json',body,{headers:headers});
+  }
+
+  fetchData(){
+    return this.http.get('https://angular2-course-4d245.firebaseio.com/recipes.json')
+      .map((response:Response)=>response.json())
+      .subscribe(
+        (data: Recipe[])=>{
+          this.recipes = data;
+          this.recipesChanged.emit(this.recipes);
+        }
+      )
   }
 
 }
